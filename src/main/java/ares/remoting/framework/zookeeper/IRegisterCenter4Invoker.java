@@ -20,7 +20,7 @@ public interface IRegisterCenter4Invoker {
      * @param remoteAppKey
      * @param groupName
      */
-    public void initProviderMap(String remoteAppKey, String groupName);
+    void initProviderMap(String remoteAppKey, String groupName);
 
 
     /**
@@ -28,7 +28,7 @@ public interface IRegisterCenter4Invoker {
      *
      * @return
      */
-    public Map<String, List<ProviderService>> getServiceMetaDataMap4Consume();
+    Map<String, List<ProviderService>> getServiceMetaDataMap4Consume();
 
 
     /**
@@ -36,7 +36,7 @@ public interface IRegisterCenter4Invoker {
      *
      * @param invoker
      */
-    public void registerInvoker(final InvokerService invoker);
+    void registerInvoker(final InvokerService invoker);
 
 
 }

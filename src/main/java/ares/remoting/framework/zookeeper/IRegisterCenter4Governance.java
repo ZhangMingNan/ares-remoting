@@ -21,7 +21,7 @@ public interface IRegisterCenter4Governance {
      * @param appKey
      * @return
      */
-    public Pair<List<ProviderService>, List<InvokerService>> queryProvidersAndInvokers(String serviceName, String appKey);
+    Pair<List<ProviderService>, List<InvokerService>> queryProvidersAndInvokers(String serviceName, String appKey);
 
 
 }

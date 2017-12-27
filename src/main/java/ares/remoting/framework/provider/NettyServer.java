@@ -22,9 +22,11 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class NettyServer {
 
+    //NettyServer 使用了单列模式,这里持有唯一的 nettyServer对象.
     private static NettyServer nettyServer = new NettyServer();
 
     private Channel channel;
+
     ////服务端boss线程组
     private EventLoopGroup bossGroup;
     //服务端worker线程组

@@ -16,5 +16,5 @@ public interface ClusterStrategy {
      * @param providerServices
      * @return
      */
-    public ProviderService select(List<ProviderService> providerServices);
+     ProviderService select(List<ProviderService> providerServices);
 }

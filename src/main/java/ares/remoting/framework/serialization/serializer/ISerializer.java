@@ -13,7 +13,7 @@ public interface ISerializer {
      * @param <T>
      * @return
      */
-    public <T> byte[] serialize(T obj);
+    <T> byte[] serialize(T obj);
 
 
     /**
@@ -24,5 +24,5 @@ public interface ISerializer {
      * @param <T>
      * @return
      */
-    public <T> T deserialize(byte[] data, Class<T> clazz);
+    <T> T deserialize(byte[] data, Class<T> clazz);
 }

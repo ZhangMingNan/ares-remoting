@@ -19,7 +19,7 @@ public interface IRegisterCenter4Provider {
      *
      * @param serviceMetaData
      */
-    public void registerProvider(final List<ProviderService> serviceMetaData);
+    void registerProvider(final List<ProviderService> serviceMetaData);
 
 
     /**
@@ -29,7 +29,7 @@ public interface IRegisterCenter4Provider {
      *
      * @return
      */
-    public Map<String, List<ProviderService>> getProviderServiceMap();
+    Map<String, List<ProviderService>> getProviderServiceMap();
 
 
 }

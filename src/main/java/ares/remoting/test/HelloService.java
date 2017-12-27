@@ -6,6 +6,6 @@ package ares.remoting.test;
  */
 public interface HelloService {
 
-    public String sayHello(String somebody);
+    String sayHello(String somebody);
 
 }

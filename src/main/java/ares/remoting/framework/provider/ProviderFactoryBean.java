@@ -61,7 +61,9 @@ public class ProviderFactoryBean implements FactoryBean, InitializingBean {
 
         //注册到zk,元数据注册中心
         List<ProviderService> providerServiceList = buildProviderServiceInfos();
+
         IRegisterCenter4Provider registerCenter4Provider = RegisterCenter.singleton();
+
         registerCenter4Provider.registerProvider(providerServiceList);
     }
 
