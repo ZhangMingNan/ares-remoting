@@ -40,6 +40,8 @@ public class RevokerServiceCallable implements Callable<AresResponse> {
     public AresResponse call() throws Exception {
         //初始化返回结果容器,将本次调用的唯一标识作为Key存入返回结果的Map
         RevokerResponseHolder.initResponseData(request.getUniqueKey());
+
+
         //根据本地调用服务提供者地址获取对应的Netty通道channel队列
         ArrayBlockingQueue<Channel> blockingQueue = NettyChannelPoolFactory.channelPoolFactoryInstance().acquire(inetSocketAddress);
         try {
@@ -64,6 +66,7 @@ public class RevokerServiceCallable implements Callable<AresResponse> {
 
             //从返回结果容器中获取返回结果,同时设置等待超时时间为invokeTimeout
             long invokeTimeout = request.getInvokeTimeout();
+
             return RevokerResponseHolder.getValue(request.getUniqueKey(), invokeTimeout);
         } catch (Exception e) {
             logger.error("service invoke error.", e);

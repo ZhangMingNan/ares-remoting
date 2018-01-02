@@ -16,6 +16,7 @@ public class MainClient {
 
         //引入远程服务
         final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("ares-client.xml");
+
         //获取远程服务
         final HelloService helloService = (HelloService) context.getBean("remoteHelloService");
 

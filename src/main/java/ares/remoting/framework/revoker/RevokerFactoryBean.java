@@ -56,12 +56,16 @@ public class RevokerFactoryBean implements FactoryBean, InitializingBean {
         //初始化服务提供者列表到本地缓存
         registerCenter4Consumer.initProviderMap(remoteAppKey, groupName);
 
-        //初始化Netty Channel
+        //消费端获取服务提供者信息
         Map<String, List<ProviderService>> providerMap = registerCenter4Consumer.getServiceMetaDataMap4Consume();
         if (MapUtils.isEmpty(providerMap)) {
             throw new RuntimeException("service provider list is empty.");
         }
+        //根据服务提供者数据,初始化Netty Channel.
+        //初始化的作用就是创建一个 map, key为 服务的ip/端口 ,value为 channel
+        //可以视为一种 channel 缓存策略
         NettyChannelPoolFactory.channelPoolFactoryInstance().initChannelPoolFactory(providerMap);
+
 
         //获取服务提供者代理对象
         RevokerProxyBeanFactory proxyFactory = RevokerProxyBeanFactory.singleton(targetInterface, timeout, clusterStrategy);

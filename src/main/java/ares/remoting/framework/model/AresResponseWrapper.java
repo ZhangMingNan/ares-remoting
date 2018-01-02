@@ -11,7 +11,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class AresResponseWrapper {
 
-    //存储返回结果的阻塞队列
+    //存储返回结果的阻塞队列, 这个队列的容量是 1 注意
     private BlockingQueue<AresResponse> responseQueue = new ArrayBlockingQueue<AresResponse>(1);
     //结果返回时间
     private long responseTime;

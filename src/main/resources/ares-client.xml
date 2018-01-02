@@ -12,5 +12,5 @@
                           clusterStrategy="WeightRandom"
                           remoteAppKey="ares"
                           groupName="default"
-                          timeout="3000"/>
+                          timeout="300000"/>
 </beans>

@@ -31,6 +31,7 @@ public class NettyDecoderHandler extends ByteToMessageDecoder {
             return;
         }
         in.markReaderIndex();
+        //读取消息头数据, 此数据代表 数据长度.
         int dataLength = in.readInt();
         if (dataLength < 0) {
             ctx.close();

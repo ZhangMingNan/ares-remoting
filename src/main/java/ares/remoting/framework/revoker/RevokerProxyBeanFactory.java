@@ -63,8 +63,11 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
 
         //声明调用AresRequest对象,AresRequest表示发起一次调用所包含的信息
         final AresRequest request = new AresRequest();
+
         //设置本次调用的唯一标识
+        //使用 UUID + 当前线程ID 作为每次调用的唯一标识
         request.setUniqueKey(UUID.randomUUID().toString() + "-" + Thread.currentThread().getId());
+
         //设置本次调用的服务提供者信息
         request.setProviderService(newProvider);
         //设置本次调用的超时时间
@@ -79,6 +82,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
             if (fixedThreadPool == null) {
                 synchronized (RevokerProxyBeanFactory.class) {
                     if (null == fixedThreadPool) {
+                        //固定容量线程池
                         fixedThreadPool = Executors.newFixedThreadPool(threadWorkerNumber);
                     }
                 }
@@ -86,12 +90,15 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
             //根据服务提供者的ip,port,构建InetSocketAddress对象,标识服务提供者地址
             String serverIp = request.getProviderService().getServerIp();
             int serverPort = request.getProviderService().getServerPort();
+
             InetSocketAddress inetSocketAddress = new InetSocketAddress(serverIp, serverPort);
+
             //提交本次调用信息到线程池fixedThreadPool,发起调用
             Future<AresResponse> responseFuture = fixedThreadPool.submit(RevokerServiceCallable.of(inetSocketAddress, request));
-            //获取调用的返回结果
+            //获取调用的返回结果, 设置 调用超时时间.
             AresResponse response = responseFuture.get(request.getInvokeTimeout(), TimeUnit.MILLISECONDS);
             if (response != null) {
+                //返回远程调用结果
                 return response.getResult();
             }
         } catch (Exception e) {

@@ -34,14 +34,21 @@ public class NettyChannelPoolFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyChannelPoolFactory.class);
 
+
+    /**
+     * 单列对象
+     */
     private static final NettyChannelPoolFactory channelPoolFactory = new NettyChannelPoolFactory();
 
     //Key为服务提供者地址,value为Netty Channel阻塞队列
     private static final Map<InetSocketAddress, ArrayBlockingQueue<Channel>> channelPoolMap = Maps.newConcurrentMap();
+
     //初始化Netty Channel阻塞队列的长度,该值为可配置信息
     private static final int channelConnectSize = PropertyConfigeHelper.getChannelConnectSize();
+
     //初始化序列化协议类型,该值为可配置信息
     private static final SerializeType serializeType = PropertyConfigeHelper.getSerializeType();
+
     //服务提供者列表
     private List<ProviderService> serviceMetaDataList = Lists.newArrayList();
 
@@ -51,13 +58,16 @@ public class NettyChannelPoolFactory {
 
 
     /**
-     * 初始化Netty channel 连接队列Map
-     *
+     * 初始化Netty channel 连接队列 Map
+     * key 为 socketAddress
+     * value 为 channelArrayBlockingQueue
      * @param providerMap
      */
     public void initChannelPoolFactory(Map<String, List<ProviderService>> providerMap) {
         //将服务提供者信息存入serviceMetaDataList列表
         Collection<List<ProviderService>> collectionServiceMetaDataList = providerMap.values();
+
+        //过滤掉 没有服务提供者的服务
         for (List<ProviderService> serviceMetaDataModels : collectionServiceMetaDataList) {
             if (CollectionUtils.isEmpty(serviceMetaDataModels)) {
                 continue;
@@ -65,12 +75,14 @@ public class NettyChannelPoolFactory {
             serviceMetaDataList.addAll(serviceMetaDataModels);
         }
 
-        //获取服务提供者地址列表
+        //获取服务提供者地址列表, 提取出 ip 和 端口
         Set<InetSocketAddress> socketAddressSet = Sets.newHashSet();
         for (ProviderService serviceMetaData : serviceMetaDataList) {
+            //获取ip
             String serviceIp = serviceMetaData.getServerIp();
+            //获取端口
             int servicePort = serviceMetaData.getServerPort();
-
+            //封装成 InetSocketAddress 添加到 socketAddressSet 集合中.
             InetSocketAddress socketAddress = new InetSocketAddress(serviceIp, servicePort);
             socketAddressSet.add(socketAddress);
         }
@@ -83,6 +95,7 @@ public class NettyChannelPoolFactory {
                     Channel channel = null;
                     while (channel == null) {
                         //若channel不存在,则注册新的Netty Channel
+                        // 根据 socketAddress 中包含的 ip 和端口 创建 channel
                         channel = registerChannel(socketAddress);
                     }
                     //计数器,初始化的时候存入阻塞队列的Netty Channel个数不超过channelConnectSize
@@ -93,8 +106,11 @@ public class NettyChannelPoolFactory {
                     ArrayBlockingQueue<Channel> channelArrayBlockingQueue = channelPoolMap.get(socketAddress);
                     if (channelArrayBlockingQueue == null) {
                         channelArrayBlockingQueue = new ArrayBlockingQueue<Channel>(channelConnectSize);
+
+                        //以 socketAddress 为 key ,value 是一个阻塞队列.
                         channelPoolMap.put(socketAddress, channelArrayBlockingQueue);
                     }
+
                     channelArrayBlockingQueue.offer(channel);
                 }
             } catch (Exception e) {

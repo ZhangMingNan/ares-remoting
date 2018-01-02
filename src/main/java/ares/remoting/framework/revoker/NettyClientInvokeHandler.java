@@ -27,7 +27,8 @@ public class NettyClientInvokeHandler extends SimpleChannelInboundHandler<AresRe
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, AresResponse response) throws Exception {
-        //将Netty异步返回的结果存入阻塞队列,以便调用端同步获取
+        //将Netty异步返回的结果存入阻塞队列,以便调用端同步获取.
+        //调用此方法,接触客户端线程阻塞状态.
         RevokerResponseHolder.putResultValue(response);
     }
 

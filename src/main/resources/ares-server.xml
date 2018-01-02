@@ -5,8 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.ares-remoting.com/schema/ares-service http://www.ares-remoting.com/schema/ares-service.xsd">
 
-    <!-- 发布远程服务 -->
+    <!--将服务添加到spring容器中-->
     <bean id="helloService" class="ares.remoting.test.HelloServiceImpl"/>
+    <!-- 发布 helloService -->
     <AresServer:service id="helloServiceRegister"
                         interface="ares.remoting.test.HelloService"
                         ref="helloService"
