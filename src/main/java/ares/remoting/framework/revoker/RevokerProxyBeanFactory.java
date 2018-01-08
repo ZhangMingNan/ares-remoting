@@ -108,7 +108,12 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
     }
 
 
+    /**
+     * 获取客户端代理对象
+     * @return
+     */
     public Object getProxy() {
+
         return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[]{targetInterface}, this);
     }
 

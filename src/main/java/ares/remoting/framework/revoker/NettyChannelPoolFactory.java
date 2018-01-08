@@ -187,9 +187,11 @@ public class NettyChannelPoolFactory {
                             ch.pipeline().addLast(new NettyClientInvokeHandler());
                         }
                     });
-
+            //连接服务端
             ChannelFuture channelFuture = bootstrap.connect().sync();
+            //获取到通道
             final Channel newChannel = channelFuture.channel();
+
             final CountDownLatch connectedLatch = new CountDownLatch(1);
 
             final List<Boolean> isSuccessHolder = Lists.newArrayListWithCapacity(1);
@@ -208,8 +210,9 @@ public class NettyChannelPoolFactory {
                     connectedLatch.countDown();
                 }
             });
-
+            //这里等待 上面监听器中 执行完 countDown方法
             connectedLatch.await();
+
             //如果Channel建立成功,返回新建的Channel
             if (isSuccessHolder.get(0)) {
                 return newChannel;

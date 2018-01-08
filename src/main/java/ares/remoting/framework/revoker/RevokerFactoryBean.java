@@ -66,7 +66,6 @@ public class RevokerFactoryBean implements FactoryBean, InitializingBean {
         //可以视为一种 channel 缓存策略
         NettyChannelPoolFactory.channelPoolFactoryInstance().initChannelPoolFactory(providerMap);
 
-
         //获取服务提供者代理对象
         RevokerProxyBeanFactory proxyFactory = RevokerProxyBeanFactory.singleton(targetInterface, timeout, clusterStrategy);
         this.serviceObject = proxyFactory.getProxy();
